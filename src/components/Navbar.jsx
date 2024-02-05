@@ -6,7 +6,7 @@ const Navbar = ({ title }) => {
  
 
   return (
-    <nav className=" p-4 bg-gray-700 text-white">
+    <nav className=" p-4 bg-gray-800 text-white">
       <div className="max-w-[880px] mx-auto flex items-center justify-between">
         <div>
           <span className="text-xl font-bold">{title}</span>

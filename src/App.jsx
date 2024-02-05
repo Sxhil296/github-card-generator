@@ -7,20 +7,33 @@ import Footer from "./components/Footer";
 function App() {
   const [username, setUsername] = useState("");
   const [userData, setUserData] = useState(null);
+  const [error, setError] = useState(null);
 
   const fetchData = async () => {
     try {
-      const response = await axios.get(
-        `https://api.github.com/users/${username}`
-      );
-      setUserData(response.data);
+      const response = await axios.get(`https://api.github.com/users/${username}`);
+
+      // Check if the user exists (status 200)
+      if (response.status === 200) {
+        setUserData(response.data);
+        setError(null);
+      } else {
+        // Handle other response statuses (e.g., user not found)
+        setUserData(null);
+        setError("User not found!");
+      }
     } catch (error) {
-      console.error("Error fetching GitHub data:", error);
+      // Handle network or other errors
+      setUserData(null);
+      setError("Error fetching GitHub data");
     }
   };
 
   const handleGenerateCard = () => {
-    fetchData();
+    // Only fetch data if the username is present
+    if (username.trim() !== "") {
+      fetchData();
+    }
   };
 
   return (
@@ -43,7 +56,11 @@ function App() {
               Generate Card
             </button>
           </div>
-
+          {error && (
+            <div className="text-center mt-4">
+              <p className="text-red-500 font-bold">{error}</p>
+            </div>
+          )}
           {userData && <UserCard userData={userData} />}
         </div>
       </div>

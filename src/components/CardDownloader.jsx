@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useRef } from "react";
 import html2canvas from "html2canvas";
 import { saveAs } from "file-saver";
 
 const CardDownloader = ({ cardId }) => {
+  const cardRef = useRef(null);
+
   const downloadAsImage = async () => {
     const cardElement = document.getElementById(cardId);
 
@@ -11,18 +13,22 @@ const CardDownloader = ({ cardId }) => {
       return;
     }
 
-    const canvas = await html2canvas(cardElement);
-    const imgData = canvas.toDataURL("image/png");
+    cardRef.current = cardElement;
 
-    // Convert canvas to PNG Blob
-    canvas.toBlob((blob) => {
-      // Save the Blob as a file using FileSaver.js
-      saveAs(blob, "user-card.png");
-    }, "image/png");
+    try {
+      const canvas = await html2canvas(cardRef.current, { scale: 3 });
+      const imgData = canvas.toDataURL("image/png");
+      saveAs(imgData, "user-card.png");
+    } catch (error) {
+      console.error("Error generating image:", error);
+    }
   };
 
   return (
-    <button onClick={downloadAsImage} className="p-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+    <button
+      onClick={downloadAsImage}
+      className="p-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+    >
       Download as PNG
     </button>
   );
