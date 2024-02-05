@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Navbar from "./components/Navbar";
 import UserCard from "./components/UserCard";
 import Footer from "./components/Footer";
@@ -7,7 +7,6 @@ import Footer from "./components/Footer";
 function App() {
   const [username, setUsername] = useState("");
   const [userData, setUserData] = useState(null);
-  const [theme, setTheme] = useState("light");
 
   const fetchData = async () => {
     try {
@@ -26,7 +25,7 @@ function App() {
 
   return (
     <>
-      <div className={`app-container ${theme === "dark" ? "dark-theme" : "light-theme"}`}>
+      <div>
         <Navbar title="GitHub Card Generator" />
         <div className="container mx-auto max-w-[700px] mt-8">
           <div className="flex mx-auto justify-center">
